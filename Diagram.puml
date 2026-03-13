@@ -1,0 +1,104 @@
+@startuml
+
+title Crazy Flight - Class Diagram
+
+' ======================
+' CLASSES PRINCIPAIS
+' ======================
+
+class Game {
+    screen
+    clock
+    run()
+    update()
+    render()
+}
+
+class Menu {
+    show_menu()
+    start_game()
+}
+
+class Level {
+    level_number
+    difficulty
+    spawn_obstacles()
+}
+
+class Background {
+    image
+    scroll_speed
+    update()
+    draw()
+}
+
+' ======================
+' CLASSE BASE
+' ======================
+
+class Entity {
+    x
+    y
+    speed
+    update()
+    draw()
+}
+
+' ======================
+' PLAYER
+' ======================
+
+class Player {
+    lives
+    move()
+}
+
+Entity <|-- Player
+
+' ======================
+' OBSTACLES
+' ======================
+
+class Obstacle {
+    damage
+    move()
+}
+
+Entity <|-- Obstacle
+
+class Balloon
+class Bird
+class Dragon
+class UFO
+
+Obstacle <|-- Balloon
+Obstacle <|-- Bird
+Obstacle <|-- Dragon
+Obstacle <|-- UFO
+
+' ======================
+' FACTORY
+' ======================
+
+class EntityFactory {
+    create_player()
+    create_balloon()
+    create_bird()
+    create_dragon()
+    create_ufo()
+}
+
+' ======================
+' RELACIONAMENTOS
+' ======================
+
+Game --> Menu
+Game --> Level
+Game --> Player
+Game --> Obstacle
+Game --> Background
+
+EntityFactory --> Player
+EntityFactory --> Obstacle
+
+@enduml
