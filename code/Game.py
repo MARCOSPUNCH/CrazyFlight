@@ -1,7 +1,6 @@
-
 import pygame
 
-from code.Const import WIN_WIDTH, WIN_HEIGHT, MENU
+from code.Const import SCR_WIDTH, SCR_HEIGHT, MENU
 from code.Menu import Menu
 from code.Level import Level
 
@@ -10,7 +9,7 @@ class Game:
 
     def __init__(self):
         pygame.init()
-        self.window = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
+        self.window = pygame.display.set_mode((SCR_WIDTH, SCR_HEIGHT))
 
     def run(self):
 

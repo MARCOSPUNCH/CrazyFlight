@@ -2,13 +2,13 @@ import pygame.image
 from pygame import Surface
 from pygame.font import Font
 
-from code.Const import WIN_WIDTH, C_GREEN, C_RED, MENU, C_YELLOW, C_DARK_BLUE
+from code.Const import C_GREEN, C_RED, MENU, C_YELLOW, C_DARK_BLUE, SCR_WIDTH
 
 
 class Menu:
     def __init__(self, window):
         self.window = window
-        self.surf = pygame.image.load('./asset/MenuBg.jpg')
+        self.surf = pygame.image.load('./asset/MenuBg.jpg').convert_alpha()
         self.rect = self.surf.get_rect(left=0, top=0)
 
         pass
@@ -22,15 +22,15 @@ class Menu:
 
             self.window.blit(self.surf, self.rect)
 
-            self.menu_text(100, "Crazy", C_GREEN, (WIN_WIDTH / 2, 70))
-            self.menu_text(100, "Flight", C_GREEN, (WIN_WIDTH / 2, 160))
+            self.menu_text(100, "Crazy", C_GREEN, (SCR_WIDTH / 2, 70))
+            self.menu_text(100, "Flight", C_GREEN, (SCR_WIDTH / 2, 160))
 
             for i in range(len(MENU)):
 
                 if i == menu_index:
-                    self.menu_text(30, MENU[i], C_DARK_BLUE, (WIN_WIDTH / 2, 210 + 30 * i))
+                    self.menu_text(30, MENU[i], C_DARK_BLUE, (SCR_WIDTH / 2, 210 + 30 * i))
                 else:
-                    self.menu_text(30, MENU[i], C_RED, (WIN_WIDTH / 2, 210 + 30 * i))
+                    self.menu_text(30, MENU[i], C_RED, (SCR_WIDTH / 2, 210 + 30 * i))
 
             for event in pygame.event.get():
 
