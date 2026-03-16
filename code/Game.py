@@ -19,5 +19,13 @@ class Game:
             menu_return = menu.run()
 
             if menu_return == "GAME":
-                level = Level(self.window, "Level1")
-                level.run()
+
+                current_level = 1
+
+                while True:
+
+                    level = Level(self.window, f"Level{current_level}")
+
+                    level.run()
+
+                    current_level += 1
