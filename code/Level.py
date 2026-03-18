@@ -38,12 +38,12 @@ class Level:
 
     def run(self):
 
+        # carregar música do level
         music_path_mp3 = f'./asset/{self.name}.mp3'
         music_path_wav = f'./asset/{self.name}.wav'
 
         if os.path.exists(music_path_mp3):
             pygame.mixer.music.load(music_path_mp3)
-
         elif os.path.exists(music_path_wav):
             pygame.mixer.music.load(music_path_wav)
 
@@ -55,13 +55,12 @@ class Level:
         while True:
 
             clock.tick(60)
-
             current_time = pygame.time.get_ticks()
 
             # fim do level
             if current_time - self.level_start_time > self.level_duration:
-                pygame.mixer.stop()  # 🔥 ADICIONA ISSO
-                pygame.mixer.music.stop()  # (pode manter)
+                pygame.mixer.stop()
+                pygame.mixer.music.stop()
                 return "next"
 
             # spawn inimigos
@@ -76,9 +75,7 @@ class Level:
                 ]
 
                 enemy_name = random.choice(enemy_types)
-
                 enemy_y = random.randint(0, SCR_HEIGHT - 50)
-
                 enemy = EntityFactory.get_entity(enemy_name, (SCR_WIDTH, enemy_y))
 
                 if enemy:
@@ -90,9 +87,7 @@ class Level:
             for ent in self.entity_list[:]:
 
                 if not isinstance(ent, Player):
-
                     ent.move()
-
                     self.window.blit(ent.surf, ent.rect)
 
                     if isinstance(ent, Enemy) and ent.rect.right < -self.BUFFER:
@@ -104,17 +99,34 @@ class Level:
             if player:
                 player.move()
                 self.window.blit(player.surf, player.rect)
-                # colisão
+
+                # colisão com explosão
                 for ent in self.entity_list:
                     if isinstance(ent, Enemy):
                         if player.rect.colliderect(ent.rect):
-                            pygame.mixer.stop()  # 🔥 ADICIONA ISSO
+                            # 🔹 para tudo
+                            pygame.mixer.stop()
                             pygame.mixer.music.stop()
+
+                            # 🔹 explosão localizada
+                            explosion_img = pygame.image.load('./asset/Explosion0.png').convert_alpha()
+                            explosion_img = pygame.transform.scale(explosion_img, (50, 50))
+                            explosion_rect = explosion_img.get_rect(center=player.rect.center)
+
+                            # 🔹 som da explosão
+                            explosion_sound = pygame.mixer.Sound('./asset/Explosion.ogg')
+                            explosion_sound.play()
+
+                            # 🔹 mostrar explosão 0.5s
+                            self.window.blit(explosion_img, explosion_rect)
+                            pygame.display.flip()
+                            pygame.time.delay(500)
+
+                            # 🔹 retornar gameover
                             return "gameover"
 
             # eventos pygame
             for event in pygame.event.get():
-
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
