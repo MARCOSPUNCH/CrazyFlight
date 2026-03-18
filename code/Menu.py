@@ -2,7 +2,7 @@ import pygame.image
 from pygame import Surface
 from pygame.font import Font
 
-from code.Const import C_GREEN, C_RED, MENU, C_YELLOW, C_DARK_BLUE, SCR_WIDTH
+from code.Const import C_GREEN, C_RED, MENU, C_YELLOW, C_DARK_BLUE, SCR_WIDTH, ORANGE
 
 
 class Menu:
@@ -11,53 +11,62 @@ class Menu:
         self.surf = pygame.image.load('./asset/MenuBg.jpg').convert_alpha()
         self.rect = self.surf.get_rect(left=0, top=0)
 
-        pass
-
     def run(self, menu_index=0):
 
-        pygame.mixer_music.load('./asset/Menu.mp3')
-        pygame.mixer_music.play(-1)
+        # 🔊 música do menu
+        pygame.mixer.music.load('./asset/Menu.mp3')
+        pygame.mixer.music.set_volume(0.6)
+        pygame.mixer.music.play(-1)
 
         while True:
 
+            # desenha fundo
             self.window.blit(self.surf, self.rect)
 
+            # títulos
             self.menu_text(100, "Crazy", C_GREEN, (SCR_WIDTH / 2, 70))
             self.menu_text(100, "Flight", C_GREEN, (SCR_WIDTH / 2, 160))
 
+            # opções do menu
             for i in range(len(MENU)):
+                color = C_DARK_BLUE if i == menu_index else C_RED
+                self.menu_text(30, MENU[i], color, (SCR_WIDTH / 2, 210 + 30 * i))
 
-                if i == menu_index:
-                    self.menu_text(30, MENU[i], C_DARK_BLUE, (SCR_WIDTH / 2, 210 + 30 * i))
-                else:
-                    self.menu_text(30, MENU[i], C_RED, (SCR_WIDTH / 2, 210 + 30 * i))
+            # 🔥 instruções do jogo no canto inferior esquerdo
+            instr_font = pygame.font.Font('./asset/DeathStar.otf', 12)
+            instructions = [
+                "UP = move up",
+                "DOWN = move down",
+                "LEFT = move left",
+                "RIGHT = move right",
+                "SPACE + RIGHT = turbo"
+            ]
 
+            for i, line in enumerate(instructions):
+                instr_text = instr_font.render(line, True, ORANGE)
+                self.window.blit(instr_text, (10, 220 + i * 18))  # 18 px de espaçamento entre linhas
+
+            # eventos
             for event in pygame.event.get():
-
                 if event.type == pygame.QUIT:
-                    pygame.mixer_music.stop()
+                    pygame.mixer.music.stop()
                     pygame.quit()
                     quit()
 
                 if event.type == pygame.KEYDOWN:
-
                     if event.key == pygame.K_DOWN:
                         menu_index = (menu_index + 1) % len(MENU)
-
                     if event.key == pygame.K_UP:
                         menu_index = (menu_index - 1) % len(MENU)
-
                     if event.key == pygame.K_RETURN:
-
+                        pygame.mixer.music.stop()
                         if menu_index == 0:  # START GAME
-                            pygame.mixer_music.stop()
                             return "GAME"
-
                         if menu_index == 1:  # EXIT
-                            pygame.mixer_music.stop()
                             pygame.quit()
                             quit()
 
+            # atualiza tela
             pygame.display.flip()
 
     def menu_text(self, tex_size: int, text: str, text_color: tuple, text_center_pos: tuple):

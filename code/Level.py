@@ -36,7 +36,6 @@ class Level:
         self.level_start_time = pygame.time.get_ticks()
         self.level_duration = LEVEL_DURATION
 
-
     def run(self):
 
         music_path_mp3 = f'./asset/{self.name}.mp3'
@@ -48,7 +47,7 @@ class Level:
         elif os.path.exists(music_path_wav):
             pygame.mixer.music.load(music_path_wav)
 
-        pygame.mixer.music.set_volume(0.5)
+        pygame.mixer.music.set_volume(0.2)
         pygame.mixer.music.play(-1)
 
         clock = pygame.time.Clock()
@@ -61,8 +60,9 @@ class Level:
 
             # fim do level
             if current_time - self.level_start_time > self.level_duration:
-                return
-
+                pygame.mixer.stop()  # 🔥 ADICIONA ISSO
+                pygame.mixer.music.stop()  # (pode manter)
+                return "next"
 
             # spawn inimigos
             if current_time - self.spawn_time > self.spawn_delay:
@@ -86,7 +86,6 @@ class Level:
 
                 self.spawn_time = current_time
 
-
             # atualizar entidades
             for ent in self.entity_list[:]:
 
@@ -99,14 +98,19 @@ class Level:
                     if isinstance(ent, Enemy) and ent.rect.right < -self.BUFFER:
                         self.entity_list.remove(ent)
 
-
             # desenhar player
             player = next((e for e in self.entity_list if isinstance(e, Player)), None)
 
             if player:
                 player.move()
                 self.window.blit(player.surf, player.rect)
-
+                # colisão
+                for ent in self.entity_list:
+                    if isinstance(ent, Enemy):
+                        if player.rect.colliderect(ent.rect):
+                            pygame.mixer.stop()  # 🔥 ADICIONA ISSO
+                            pygame.mixer.music.stop()
+                            return "gameover"
 
             # eventos pygame
             for event in pygame.event.get():
@@ -114,6 +118,5 @@ class Level:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-
 
             pygame.display.flip()

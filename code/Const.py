@@ -5,6 +5,7 @@ C_GREEN = (0 ,255, 0)
 C_RED = (255, 0, 0)
 C_YELLOW = (255, 255, 0)
 C_DARK_BLUE = (0, 0, 255)
+ORANGE = (255, 128, 0)
 
 
 # -----------------------------
@@ -80,8 +81,8 @@ ENEMY_SPEED = {
 # SISTEMA DE LEVEL
 # -----------------------------
 
-# duração do level (30s)
-LEVEL_DURATION = 30000
+# duração do level (20s)
+LEVEL_DURATION = 20000
 
 
 # tempo de spawn por level
