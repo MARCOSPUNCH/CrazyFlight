@@ -1,3 +1,5 @@
+import sys
+
 import pygame
 
 
@@ -34,7 +36,7 @@ class GameOver:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
-                    exit()
+                    sys.exit()
 
             # desenha
             self.screen.blit(self.background0, (0, 0))

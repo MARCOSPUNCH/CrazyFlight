@@ -1,3 +1,5 @@
+import sys
+
 import pygame
 
 from code.Const import C_RED
@@ -37,7 +39,7 @@ class WinScreen:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
-                    exit()
+                    sys.exit()
 
             # 🔥 ordem correta
             self.screen.blit(self.background, (0, 0))

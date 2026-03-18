@@ -1,3 +1,5 @@
+import sys
+
 import pygame.image
 from pygame import Surface
 from pygame.font import Font
@@ -51,7 +53,7 @@ class Menu:
                 if event.type == pygame.QUIT:
                     pygame.mixer.music.stop()
                     pygame.quit()
-                    quit()
+                    sys.exit()
 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_DOWN:
@@ -64,7 +66,7 @@ class Menu:
                             return "GAME"
                         if menu_index == 1:  # EXIT
                             pygame.quit()
-                            quit()
+                            sys.exit()
 
             # atualiza tela
             pygame.display.flip()
